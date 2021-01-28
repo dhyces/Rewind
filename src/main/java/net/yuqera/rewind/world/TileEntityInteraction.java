@@ -1,4 +1,4 @@
-package net.yuqera.rewind.services;
+package net.yuqera.rewind.world;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.util.SoundCategory;
@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.yuqera.rewind.models.BlockHistory;
 
-public class BlockService  {
+public class TileEntityInteraction {
     public static void placeBlockInWorld(BlockHistory block) {
         block.World.setBlockState(block.Position, block.State, 2);
 

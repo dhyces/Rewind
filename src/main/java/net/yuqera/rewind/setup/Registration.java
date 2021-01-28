@@ -1,27 +1,33 @@
 package net.yuqera.rewind.setup;
 
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-
-import java.util.HashMap;
-import java.util.Map;
+import net.minecraft.item.Item;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ObjectHolder;
+import net.yuqera.rewind.RewindMod;
+import net.yuqera.rewind.item.TimeWatcherItem;
 
 public class Registration {
-    public static final Map<String, KeyBinding> MOD_CONTROLS = new HashMap<>();
+    public static final RewindItemGroup REWIND_ITEM_GROUP = new RewindItemGroup("rewind");
+
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, RewindMod.MOD_ID);
 
     public static void register() {
+        // SETUP ITEMS/BLOCKS
+        RewindMod.LOGGER.info("Setting up modEventBusRegister.");
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        initKeyBindings();
+        ITEMS.register(modEventBus);
 
-        for (KeyBinding keyBinding : MOD_CONTROLS.values()) {
-            ClientRegistry.registerKeyBinding(keyBinding);
-        }
+        // REGISTER ITEMS/BLOCKS
+        RewindMod.LOGGER.info("Registering Mod.");
+        ModItems.register();
     }
-    
-    private static void initKeyBindings() {
-        KeyBinding undo = new KeyBinding("Undo",90,"Rewind");
-        MOD_CONTROLS.put("UNDO", undo);
-        KeyBinding redo = new KeyBinding("Redo",82,"Rewind");
-        MOD_CONTROLS.put("REDO", redo);
+
+    public static Item getItemFromRegister(String id) {
+        return null;
     }
 }
+

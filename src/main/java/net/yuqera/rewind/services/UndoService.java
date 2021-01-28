@@ -1,11 +1,11 @@
 package net.yuqera.rewind.services;
 
-import net.yuqera.rewind.config.UndoConfig;
+import net.yuqera.rewind.config.RewindConfig;
 import net.yuqera.rewind.enums.BlockAction;
 import net.yuqera.rewind.models.BlockHistory;
+import net.yuqera.rewind.world.TileEntityInteraction;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class UndoService {
@@ -20,10 +20,10 @@ public class UndoService {
         RedoService.history.add(latestBlockHistory);
         history.remove(latestBlockHistory);
         if (latestBlockHistory.Action == BlockAction.Place) {
-            BlockService.breakBlockInWorld(latestBlockHistory);
+            TileEntityInteraction.breakBlockInWorld(latestBlockHistory);
         }
         else {
-            BlockService.placeBlockInWorld(latestBlockHistory);
+            TileEntityInteraction.placeBlockInWorld(latestBlockHistory);
         }
         RedoService.addNewAction(latestBlockHistory);
     }
@@ -31,7 +31,7 @@ public class UndoService {
     public static void addNewAction(BlockHistory blockHistory) {
         if (blockHistory == null || history.contains(blockHistory))
             return;
-        if (history.size() >= UndoConfig.rewind_max_size.get()) {
+        if (history.size() >= RewindConfig.rewind_max_size.get()) {
             history.remove(0);
         }
         history.add(blockHistory);

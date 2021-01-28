@@ -11,10 +11,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.yuqera.rewind.enums.BlockAction;
 import net.yuqera.rewind.models.BlockHistory;
-import net.yuqera.rewind.services.BlockService;
 import net.yuqera.rewind.services.RedoService;
 import net.yuqera.rewind.services.UndoService;
-import net.yuqera.rewind.setup.Registration;
 
 import java.util.Map;
 
@@ -51,7 +49,7 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
     public static void keyPress(InputEvent.KeyInputEvent event) {
-        Map<String, KeyBinding> keyBindings = Registration.MOD_CONTROLS;
+        Map<String, KeyBinding> keyBindings = RewindMod.MOD_CONTROLS;
 
         if (keyBindings.get("UNDO").isKeyDown()) {
             UndoService.executeLatestAction();

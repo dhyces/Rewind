@@ -18,7 +18,7 @@ public class Config {
 
     static
     {
-        UndoConfig.init(server_builder, client_builder);
+        RewindConfig.init(server_builder, client_builder);
 
         server_config = server_builder.build();
         client_config = client_builder.build();

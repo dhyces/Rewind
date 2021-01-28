@@ -2,9 +2,9 @@ package net.yuqera.rewind.services;
 
 import net.yuqera.rewind.enums.BlockAction;
 import net.yuqera.rewind.models.BlockHistory;
+import net.yuqera.rewind.world.TileEntityInteraction;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class RedoService {
@@ -20,10 +20,10 @@ public class RedoService {
         UndoService.history.add(latestBlockHistory);
         history.remove(latestBlockHistory);
         if (latestBlockHistory.Action == BlockAction.Place) {
-            BlockService.placeBlockInWorld(latestBlockHistory);
+            TileEntityInteraction.placeBlockInWorld(latestBlockHistory);
         }
         else {
-            BlockService.breakBlockInWorld(latestBlockHistory);
+            TileEntityInteraction.breakBlockInWorld(latestBlockHistory);
         }
         renew = true;
     }

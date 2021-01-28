@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "rewind:items/time_watcher_layer0",
+    "layer1": "rewind:items/time_watcher_layer1_inactive"
+  }
+}
