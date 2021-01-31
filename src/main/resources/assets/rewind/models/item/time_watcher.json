@@ -7,6 +7,10 @@
   "__comment": "we use the activated property to see if the item has been activated",
   "overrides": [
     { "predicate": { "activated": 0 }, "model": "rewind:item/time_watcher_inactive" },
-    { "predicate": { "activated": 1 }, "model": "rewind:item/time_watcher_active" }
+
+    { "predicate": { "activated": 1, "look_direction": 0 }, "model": "rewind:item/time_watcher_active_bottom_left" },
+    { "predicate": { "activated": 1, "look_direction": 1 }, "model": "rewind:item/time_watcher_active_bottom_right" },
+    { "predicate": { "activated": 1, "look_direction": 2 }, "model": "rewind:item/time_watcher_active_top_right" },
+    { "predicate": { "activated": 1, "look_direction": 3 }, "model": "rewind:item/time_watcher_active_top_left" }
   ]
 }

@@ -19,11 +19,9 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.yuqera.rewind.config.Config;
-import net.yuqera.rewind.item.TimeWatcherItem;
+import net.yuqera.rewind.item.time_watcher.TimeWatcherItem;
 import net.yuqera.rewind.setup.AnnotatedHolder;
-import net.yuqera.rewind.setup.ModItems;
 import net.yuqera.rewind.setup.Registration;
-import net.yuqera.rewind.setup.RewindItemGroup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -85,7 +83,10 @@ public class RewindMod
     }
 
     private static void registerPropertyOverride() {
-        ItemModelsProperties.registerProperty(AnnotatedHolder.timeWatcher, new ResourceLocation("activated"),TimeWatcherItem::getActivatedPropertyOverride);
+        assert AnnotatedHolder.timeWatcher != null;
+        ItemModelsProperties.registerProperty(AnnotatedHolder.timeWatcher, new ResourceLocation(TimeWatcherItem.NBT_TAG_NAME_ACTIVATION),TimeWatcherItem::getActivationPropertyOverride);
+        ItemModelsProperties.registerProperty(AnnotatedHolder.timeWatcher, new ResourceLocation(TimeWatcherItem.NBT_TAG_NAME_LOOKING_DIRECTION),TimeWatcherItem::getLookingDirectionPropertyOverride);
+        ItemModelsProperties.registerProperty(AnnotatedHolder.timeWatcher, new ResourceLocation(TimeWatcherItem.NBT_TAG_NAME_FULLNESS),TimeWatcherItem::getFullnessPropertyOverride);
     }
 
     private static void initKeyBindings() {
@@ -93,6 +94,8 @@ public class RewindMod
         MOD_CONTROLS.put("UNDO", undo);
         KeyBinding redo = new KeyBinding("Debug Redo",82,"Rewind");
         MOD_CONTROLS.put("REDO", redo);
+        KeyBinding action = new KeyBinding("Debug Action", 192, "Rewind");
+        MOD_CONTROLS.put("ACTION", action);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)

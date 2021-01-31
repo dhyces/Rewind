@@ -2,7 +2,7 @@ package net.yuqera.rewind.setup;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
-import net.yuqera.rewind.item.TimeWatcherItem;
+import net.yuqera.rewind.item.time_watcher.TimeWatcherItem;
 
 import java.util.function.Supplier;
 

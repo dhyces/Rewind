@@ -1,37 +1,26 @@
 package net.yuqera.rewind;
 
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.world.IWorld;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.yuqera.rewind.enums.BlockAction;
-import net.yuqera.rewind.models.BlockHistory;
-import net.yuqera.rewind.services.RedoService;
-import net.yuqera.rewind.services.UndoService;
+import net.yuqera.rewind.item.time_watcher.TimeWatcherItem;
+import net.yuqera.rewind.setup.ModItems;
+import net.yuqera.rewind.utils.BlockHistoryHandler;
+import net.yuqera.rewind.utils.PlayerInventoryUtilities;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class EventHandler {
-
-    @SubscribeEvent
-    public static void placeBlock(BlockEvent.EntityPlaceEvent event) {
-        // GATES
-        if (event.isCanceled() || event.getResult() == Event.Result.DENY)
-            return;
-
-        // VARIABLES
-        IWorld world = event.getWorld();
-        BlockHistory blockHistory = new BlockHistory(world, event.getPos(), event.getPlacedBlock(), BlockAction.Place);
-
-        // EXECUTION
-        UndoService.addNewAction(blockHistory);
-    }
 
     @SubscribeEvent
     public static void breakBlock(BlockEvent.BreakEvent event) {
@@ -39,23 +28,23 @@ public class EventHandler {
         if (event.isCanceled() || event.getResult() == Event.Result.DENY)
             return;
 
-        // VARIABLES
-        IWorld world = event.getWorld();
-        BlockHistory blockHistory = new BlockHistory(world, event.getPos(), event.getState(), BlockAction.Break);
+        event.setCanceled(true);
+        BlockHistoryHandler.pushBlockHistory(event.getPlayer().getHeldItemMainhand(), event.getState().getBlock(), event.getPos());
+        event.getWorld().removeBlock(event.getPos(), false);
+        System.out.println();
+        ArrayList<ItemStack> foundWatches = PlayerInventoryUtilities.getAllItemStacksWhere(event.getPlayer().inventory, ModItems.TIME_WATCHER.get());
+        System.out.println(getFirstActiveWatch(foundWatches).getTag());
 
-        // EXECUTION
-        UndoService.addNewAction(blockHistory);
     }
 
-    @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
-    public static void keyPress(InputEvent.KeyInputEvent event) {
-        Map<String, KeyBinding> keyBindings = RewindMod.MOD_CONTROLS;
-
-        if (keyBindings.get("UNDO").isKeyDown()) {
-            UndoService.executeLatestAction();
+    private static ItemStack getFirstActiveWatch(ArrayList<ItemStack> watches) {
+        ItemStack firstActiveWatch = new ItemStack(Items.AIR, 1);
+        for (ItemStack watch : watches) {
+            if (watch.getOrCreateTag().getFloat(TimeWatcherItem.NBT_TAG_NAME_ACTIVATION) != 0.0F) {
+                firstActiveWatch = watch;
+                break;
+            }
         }
-        else if (keyBindings.get("REDO").isKeyDown()) {
-            RedoService.executeLatestAction();
-        }
+        return firstActiveWatch;
     }
 }
