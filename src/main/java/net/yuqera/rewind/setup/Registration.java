@@ -2,6 +2,7 @@ package net.yuqera.rewind.setup;
 
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
+import net.minecraft.particles.ParticleType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -12,6 +13,7 @@ public class Registration {
     public static final RewindItemGroup REWIND_ITEM_GROUP = new RewindItemGroup("rewind");
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, RewindMod.MOD_ID);
+    public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, RewindMod.MOD_ID);
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, RewindMod.MOD_ID);
 
     public static void register() {
@@ -20,11 +22,13 @@ public class Registration {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ITEMS.register(modEventBus);
+        PARTICLES.register(modEventBus);
         CONTAINERS.register(modEventBus);
 
         // REGISTER ITEMS/BLOCKS
         RewindMod.LOGGER.info("Registering Mod.");
         ModItems.register();
+        ModParticles.register();
         ModContainers.register();
     }
 }
