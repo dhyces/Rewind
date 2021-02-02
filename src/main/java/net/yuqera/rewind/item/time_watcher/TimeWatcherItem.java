@@ -1,16 +1,21 @@
 package net.yuqera.rewind.item.time_watcher;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.JukeboxBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.yuqera.rewind.block.UnwoundJukeboxBlock;
 import net.yuqera.rewind.config.RewindConfig;
 import net.yuqera.rewind.enums.EnumActivation;
+import net.yuqera.rewind.setup.ModBlocks;
 import net.yuqera.rewind.setup.Registration;
 import net.yuqera.rewind.utils.BlockHistoryHandler;
 import net.yuqera.rewind.utils.SoundManager;
@@ -68,7 +73,37 @@ public class TimeWatcherItem extends Item {
             }
         }
 
-        return new ActionResult<>(ActionResultType.PASS, stack);
+        return ActionResult.resultPass(stack);
+    }
+    
+    @Override
+    public ActionResultType onItemUse(ItemUseContext context) {
+    	ItemStack stackContext = context.getItem();
+    	if (getActivationState(stackContext).getState()) return ActionResultType.PASS;
+    	World worldContext = context.getWorld();
+    	BlockPos posContext = context.getPos();
+    	BlockState state = worldContext.getBlockState(posContext);
+    	if (!worldContext.isRemote && state.getBlock() instanceof JukeboxBlock && !state.get(JukeboxBlock.HAS_RECORD)) {
+    		if (worldContext.setBlockState(posContext, ModBlocks.UNWOUND_JUKEBOX.get().getDefaultState())) {
+    			BlockState newState = worldContext.getBlockState(posContext);
+    			if (newState.getBlock() instanceof UnwoundJukeboxBlock) {
+    				((UnwoundJukeboxBlock)newState.getBlock()).setWatch(worldContext, posContext, newState, stackContext);
+    				stackContext.shrink(1);
+    				return ActionResultType.SUCCESS;
+    			}
+    		}
+    	}
+    	return ActionResultType.PASS;
+    }
+    
+    @Override
+    public double getDurabilityForDisplay(ItemStack stack) {
+    	return 1.0 - getFullnessPropertyOverride(stack, (World)null, (LivingEntity)null);
+    }
+    
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+    	return getActivationState(stack).getState();
     }
 
     //endregion
@@ -96,7 +131,6 @@ public class TimeWatcherItem extends Item {
 
     public static float getLookingDirectionPropertyOverride(ItemStack itemStack, @Nullable World world, @Nullable LivingEntity livingEntity) {
         EnumActivatedWatchLookingDirection enumLookingDirection = getLookingDirection(itemStack);
-
         return enumLookingDirection.getNbtID();
     }
 
@@ -125,7 +159,8 @@ public class TimeWatcherItem extends Item {
         @Nonnull
         @Override
         public String getString() { return this.name; }
-        public String toString() { return this.name; }
+        @Override
+		public String toString() { return this.name; }
         public String getDescription() { return  this.description; }
         public byte getNbtID() { return this.nbtID; }
 

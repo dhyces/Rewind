@@ -1,4 +1,8 @@
 {
   "item.rewind.time_watcher": "Time Watcher",
+  "item.rewind.time_crystal": "Time Crystal",
+  
+  "block.rewind.unwound_jukebox": "Unwound Jukebox",
+  
   "itemGroup.rewind": "Rewind"
 }
