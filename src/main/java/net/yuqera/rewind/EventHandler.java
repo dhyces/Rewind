@@ -2,6 +2,7 @@ package net.yuqera.rewind;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -31,7 +32,7 @@ public class EventHandler {
         ItemStack watch = getFirstActiveWatch(foundWatches);
         if (watch.isEmpty()) return;
         event.setCanceled(true);
-        BlockHistoryHandler.pushBlockHistory(watch, event.getState().getBlock(), event.getPos(), event.getPlayer().getEntityWorld());
+        BlockHistoryHandler.pushBlockHistory(watch, event.getState().getBlock(), event.getPos(), (World)event.getWorld());
         event.getWorld().removeBlock(event.getPos(), false);
         System.out.println("\n" + getFirstActiveWatch(foundWatches).getTag());
 
