@@ -1,8 +1,8 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rewind:items/time_watcher_layer0",
-    "layer1": "rewind:items/time_watcher_layer1_inactive"
+    "layer0": "rewind:item/time_watcher_layer0",
+    "layer1": "rewind:item/time_watcher_layer1_inactive"
   },
   "__comment": "we use the activated property to see if the item has been activated",
   "overrides": [

@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rewind:items/time_watcher_layer0",
-    "layer1": "rewind:items/time_watcher_layer1_active_4"
+    "layer0": "rewind:item/time_watcher_layer0",
+    "layer1": "rewind:item/time_watcher_layer1_active_4"
   }
 }
