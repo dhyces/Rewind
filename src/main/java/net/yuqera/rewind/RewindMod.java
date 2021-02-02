@@ -1,10 +1,13 @@
 package net.yuqera.rewind;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -20,7 +23,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.yuqera.rewind.config.Config;
 import net.yuqera.rewind.item.time_watcher.TimeWatcherItem;
+import net.yuqera.rewind.particle.RewindParticle;
 import net.yuqera.rewind.setup.AnnotatedHolder;
+import net.yuqera.rewind.setup.ModParticles;
 import net.yuqera.rewind.setup.Registration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,6 +58,8 @@ public class RewindMod
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+        // Register particle factories
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerParticleFactories);
 
         Config.loadConfig(Config.client_config, FMLPaths.CONFIGDIR.get().resolve("rewindmod-client.toml").toString());
         Config.loadConfig(Config.server_config, FMLPaths.CONFIGDIR.get().resolve("rewindmod-server.toml").toString());
@@ -75,11 +82,16 @@ public class RewindMod
         // SETUP CONTROLS
         LOGGER.info("Setting up keybindings for controls.");
         initKeyBindings();
+        
         for (KeyBinding keyBinding : MOD_CONTROLS.values()) {
             ClientRegistry.registerKeyBinding(keyBinding);
         }
 
         event.enqueueWork(RewindMod::registerPropertyOverride);
+    }
+    
+    private void registerParticleFactories(final ParticleFactoryRegisterEvent e) {
+    	Minecraft.getInstance().particles.registerFactory(ModParticles.REWIND_PARTICLE.get(), RewindParticle.Factory::new);
     }
 
     private static void registerPropertyOverride() {
