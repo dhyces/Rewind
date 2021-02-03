@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class PlayerInventoryUtilities {
     public static ItemStack getFirstItemStack(PlayerInventory inventory) {
-        ItemStack foundFirstItemStack = new ItemStack(Items.AIR, 1);
+        ItemStack foundFirstItemStack = ItemStack.EMPTY;
 
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             if (!inventory.getStackInSlot(i).getItem().equals(Items.AIR)) {
@@ -25,8 +25,9 @@ public class PlayerInventoryUtilities {
         ArrayList<ItemStack> foundItemStacks = new ArrayList<>();
 
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
-            if (inventory.getStackInSlot(i).getItem().equals(toCompare)) {
-                foundItemStacks.add(inventory.getStackInSlot(i));
+        	ItemStack stack = inventory.getStackInSlot(i);
+            if (stack.getItem().equals(toCompare)) {
+                foundItemStacks.add(stack);
             }
         }
 
