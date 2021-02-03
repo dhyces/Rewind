@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public class ModItems {
     public static final RegistryObject<Item> TIME_WATCHER;
-    public static final RegistryObject<Item> TIME_CRYSTAL;
+    public static final RegistryObject<Item> TIME_SHARD;
     public static final RegistryObject<Item> UNWOUND_JUKEBOX;
 
     static void register() {}
@@ -22,7 +22,7 @@ public class ModItems {
 
     static {
         TIME_WATCHER = register("time_watcher", TimeWatcherItem::new);
-        TIME_CRYSTAL = register("time_crystal", () -> new Item(new Item.Properties().group(Registration.REWIND_ITEM_GROUP)));
+        TIME_SHARD = register("time_shard", () -> new Item(new Item.Properties().group(Registration.REWIND_ITEM_GROUP)));
         UNWOUND_JUKEBOX = register("unwound_jukebox", () -> makeItemFromBlock(ModBlocks.UNWOUND_JUKEBOX.get(), Registration.REWIND_ITEM_GROUP));
     }
     

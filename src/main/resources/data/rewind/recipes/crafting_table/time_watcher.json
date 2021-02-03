@@ -1,0 +1,28 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+	"OEO",
+	"CTC",
+	"OWO"
+	],
+	"key": {
+		"O": {
+			"item": "minecraft:obsidian"
+		},
+		"E": {
+			"item": "minecraft:ender_eye"
+		},
+		"C": {
+			"item": "minecraft:ender_chest"
+		},
+		"T": {
+			"item": "minecraft:clock"
+		},
+		"W": {
+			"item": "minecraft:music_disc_wait"
+		}
+	},
+	"result": {
+		"item": "rewind:time_watcher"
+	}
+}
