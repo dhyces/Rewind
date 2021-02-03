@@ -10,9 +10,6 @@ Build: 1.16.5-36.0.2 - Tue Jan 26 02:25:10 GMT 2021
 	lexmanos:
 		Fix dynamic registries not getting ids assigned correctly from old worlds in specific unordered value insertions. Closes #7586
 
-=========
-Build: 1.16.5-36.0.1 - Sun Jan 17 21:05:36 GMT 2021
-	knightminer4:
 		Optionally add a milk fluid to the vanilla bucket (#7294)
 		
 		Fixes the previous broken code that was supposed to make mod registered milk returned by the vanilla bucket by allowing mods to enable a milk fluid.
